@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "function_splitter"
+version = "0.1.0"
+description = "Converts function to template method for long functions"
+authors = ["Tesla2000 <fratajczak124@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+python-dotenv = "^1.0.1"
+pydantic = "^2.8.2"
+libcst = "^1.4.0"
+toml = "^0.10.2"
+more-itertools = "^10.7.0"
+config-parser = {git = "https://github.com/Tesla2000/ConfigParser"}
+litellm = "^1.72.2"
+utility-functions = {git = "https://github.com/Tesla2000/UtilityFunctions"}
+langchain = "^0.3.25"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+function_splitter = "function_splitter:main"

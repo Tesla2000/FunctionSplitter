@@ -1,0 +1,7 @@
+-   id: function_splitter
+    name: FunctionSplitter
+    description: Converts function to template method for long functions
+    entry: function_splitter
+    language: python
+    types: [python]
+    files: ''
