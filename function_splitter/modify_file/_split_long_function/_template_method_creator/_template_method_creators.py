@@ -5,7 +5,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TypeVar
 
-from _config import Config
+from _example import EXAMPLE
 from _template_method import TemplateMethod
 from _template_method import TemplateMethodConstructor
 from _template_method import TemplateMethodMainMethod
@@ -36,7 +36,7 @@ class _TemplateMethodCreator(ABC):
                 }
             ],
             model=self.model_name,
-            response_format=TemplateMethod,
+            response_format=component_class,
         )
         return component_class(
             **json.loads(model_response.choices[0]["message"].content)
@@ -59,7 +59,7 @@ class _OneShotCreator(_TemplateMethodCreator):
 
 
 class _StepByStepCreator(_TemplateMethodCreator):
-    def __init__(self, model_name: str, example: str = ""):
+    def __init__(self, model_name: str, example: str = EXAMPLE):
         super().__init__(model_name)
         self.example = example
 
@@ -90,7 +90,7 @@ class _StepByStepCreator(_TemplateMethodCreator):
                 "unless explicit import is provided on the function level. "
                 "In the first step create TemplateMethod name and create fields. "
                 "\nFUNCTION:"
-                f"\n{function_code}"
+                f"\n{function_code}" + self.example
             ),
             TemplateMethodNameAndFields,
         )
@@ -107,7 +107,7 @@ class _StepByStepCreator(_TemplateMethodCreator):
                 "\nFUNCTION:"
                 f"\n{function_code}"
                 "\n\nExtracted name and fields:"
-                f"\n{name_and_fields}"
+                f"\n{name_and_fields}" + self.example
             ),
             TemplateMethodConstructor,
         )
@@ -129,7 +129,7 @@ class _StepByStepCreator(_TemplateMethodCreator):
                 "\n\nExtracted name and fields:"
                 f"\n{name_and_fields}"
                 "\n\nCreated constructor:"
-                f"\n{constructor}"
+                f"\n{constructor}" + self.example
             ),
             TemplateMethodSubmethods,
         )
@@ -155,16 +155,7 @@ class _StepByStepCreator(_TemplateMethodCreator):
                 "\n\nCreated constructor:"
                 f"\n{constructor}"
                 "\n\nCreated submethods:"
-                f"\n{submethods}"
+                f"\n{submethods}" + self.example
             ),
             TemplateMethodMainMethod,
         )
-
-
-def template_method_creator_factory(
-    function_code: str, config: Config
-) -> _TemplateMethodCreator:
-    if len(function_code.splitlines()) <= config.function_maximal_length:
-        return _OneShotCreator(config.model_name)
-    else:
-        return _StepByStepCreator(config.model_name)
