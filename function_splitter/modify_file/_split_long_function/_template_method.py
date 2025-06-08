@@ -58,19 +58,28 @@ class _Constructor(BaseModel):
         )
 
 
-class TemplateMethod(BaseModel):
+class TemplateMethodNameAndFields(BaseModel):
     name: str = Field(
         description="Name of the template method that describes it's purpose"
     )
     fields: list[_Field] = Field(
         description="List of fields of the class that are used to pass data between methods. Should be private"
     )
+
+
+class TemplateMethodConstructor(BaseModel):
     constructor: _Constructor = Field(
         description="Constructor method. Should contain field corresponding to the parameters of the original function"
     )
+
+
+class TemplateMethodSubmethods(BaseModel):
     submethods: list[_Method] = Field(
         description="Private methods of the class each responsible for a specific piece of code. A few logical lines tops. Modify self fields and likely don't return values"
     )
+
+
+class TemplateMethodMainMethod(BaseModel):
     main_method: _Method = Field(
         description="The only public method of the class should contain calls to all submethods in the correct order and return correct values"
     )
@@ -81,6 +90,13 @@ class TemplateMethod(BaseModel):
             data["main_method"] = _Method(code=main_method_code)
         super().__init__(**data)
 
+
+class TemplateMethod(
+    TemplateMethodNameAndFields,
+    TemplateMethodConstructor,
+    TemplateMethodSubmethods,
+    TemplateMethodMainMethod,
+):
     def __str__(self):
         return f"""class {self.name}:
     {'\n\t'.join(map(str, self.fields))}

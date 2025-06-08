@@ -1,15 +1,12 @@
 from __future__ import annotations
 
-import json
-
 import libcst
 from _config import Config
 from _convert_self2name import convert_self2name
-from _template_method import TemplateMethod
+from _template_method_creator import template_method_creator_factory
 from libcst import ClassDef
 from libcst import FunctionDef
 from libcst import Module
-from litellm import completion
 
 
 def split_long_function(
@@ -17,29 +14,12 @@ def split_long_function(
 ) -> "ClassDef":
     function_def = convert_self2name(function_def, module)
     function_code = Module([function_def]).code
-    model_response = completion(
-        messages=[
-            {
-                "role": "user",
-                "content": (
-                    "Your tasks is split a long function by converting it to template method. "
-                    "\nAssume that all the variables are defined and no import is needed "
-                    "unless explicit import is provided on the function level. "
-                    "\nWhen creating calls take into account if functions are asynchronous add await or async for if needed. "
-                    "\nFUNCTION:"
-                    f"\n{function_code}"
-                ),
-            }
-        ],
-        model=config.model_name,
-        response_format=TemplateMethod,
+    template_method_creator = template_method_creator_factory(
+        function_code, config
     )
+    template_method = template_method_creator.create(function_code)
     class_def = libcst.parse_statement(
-        str(
-            TemplateMethod(
-                **json.loads(model_response.choices[0]["message"].content)
-            )
-        ).replace("\t", 4 * " ")
+        str(template_method).replace("\t", 4 * " ")
     )
     assert isinstance(
         class_def, ClassDef
