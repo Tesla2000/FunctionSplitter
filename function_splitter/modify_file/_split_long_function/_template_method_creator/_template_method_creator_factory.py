@@ -1,15 +1,22 @@
 from __future__ import annotations
 
 from _config import Config
-from _template_method_creators import _OneShotCreator
-from _template_method_creators import _StepByStepCreator
-from _template_method_creators import _TemplateMethodCreator
+from libcst import FunctionDef
+from libcst import Module
+
+from ._one_shot_creator import OneShotCreator
+from ._overt_creator import OvertCreator
+from ._step_by_step_creator import StepByStepCreator
+from ._template_method_creator import TemplateMethodCreator
 
 
 def template_method_creator_factory(
-    function_code: str, config: Config
-) -> _TemplateMethodCreator:
+    function_def: FunctionDef, config: Config
+) -> TemplateMethodCreator:
+    if config.user_overt_creator:
+        return OvertCreator(function_def, config.model_name)
+    function_code = Module([function_def]).code
     if len(function_code.splitlines()) <= config.oneshot_length_limit:
-        return _OneShotCreator(config.model_name)
+        return OneShotCreator(function_code, config.model_name)
     else:
-        return _StepByStepCreator(config.model_name)
+        return StepByStepCreator(function_code, config.model_name)

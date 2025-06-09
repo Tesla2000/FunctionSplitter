@@ -1,20 +1,21 @@
 from __future__ import annotations
 
 from typing import Any
+from typing import Optional
 
 import libcst
 from libcst import FunctionDef
 from pydantic import BaseModel
-from pydantic import Field
+from pydantic import Field as PydanticField
 
 
-class _Method(BaseModel):
-    code: str = Field(
+class Method(BaseModel):
+    code: str = PydanticField(
         description=(
             "Method code should include definition, name only self in args "
             "(there rest should be provided as fields in self). "
             "Return values if needed but operating mostly on self fields."
-            "Don't create docstrings"
+            "Create neither docstrings not comments."
         )
     )
 
@@ -27,16 +28,18 @@ class _Method(BaseModel):
         return "".join(map("\n\t".__add__, self.code.splitlines()))
 
 
-class _Field(BaseModel):
+class Field(BaseModel):
     field_name: str
-    field_type: str
+    field_type: Optional[str]
 
     def __str__(self):
-        return f"{self.field_name}: {self.field_type}"
+        if self.field_type:
+            return f"{self.field_name}: {self.field_type}"
+        return self.field_name
 
 
-class _Constructor(BaseModel):
-    fields: list[_Field] = Field(
+class Constructor(BaseModel):
+    fields: list[Field] = PydanticField(
         description=(
             "Fields user by constructor. each fields corresponds to constructor assignment."
             "\nExample:"
@@ -59,10 +62,10 @@ class _Constructor(BaseModel):
 
 
 class TemplateMethodNameAndFields(BaseModel):
-    name: str = Field(
+    name: str = PydanticField(
         description="Name of the template method that describes it's purpose"
     )
-    fields: list[_Field] = Field(
+    fields: list[Field] = PydanticField(
         description="List of fields of the class that are used to pass data between methods. Should be private"
     )
 
@@ -71,7 +74,7 @@ class TemplateMethodNameAndFields(BaseModel):
 
 
 class TemplateMethodConstructor(BaseModel):
-    constructor: _Constructor = Field(
+    constructor: Constructor = PydanticField(
         description="Constructor method. Should contain field corresponding to the parameters of the original function"
     )
 
@@ -80,7 +83,7 @@ class TemplateMethodConstructor(BaseModel):
 
 
 class TemplateMethodSubmethods(BaseModel):
-    submethods: list[_Method] = Field(
+    submethods: list[Method] = PydanticField(
         description="Private methods of the class each responsible for a specific piece of code. A few logical lines tops. Modify self fields and likely don't return values"
     )
 
@@ -89,14 +92,14 @@ class TemplateMethodSubmethods(BaseModel):
 
 
 class TemplateMethodMainMethod(BaseModel):
-    main_method: _Method = Field(
+    main_method: Method = PydanticField(
         description="The only public method of the class should contain calls to all submethods in the correct order and return correct values"
     )
 
     def __init__(self, /, **data: Any):
         main_method_code = data["main_method"]
         if isinstance(main_method_code, str):
-            data["main_method"] = _Method(code=main_method_code)
+            data["main_method"] = Method(code=main_method_code)
         super().__init__(**data)
 
     def __str__(self):

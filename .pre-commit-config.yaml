@@ -24,7 +24,16 @@ repos:
     rev: v0.0.1
     hooks:
       - id: reorder-python-imports
-        args: [--py37-plus, --add-import, 'from __future__ import annotations', --py39-plus, --retain-pre-import, 'True']
+        args: [
+          --py37-plus,
+          --add-import,
+          'from __future__ import annotations',
+          --py39-plus,
+          --retain-pre-import,
+          'True',
+          --application-directories,
+          "function_splitter,modify_file",
+        ]
   - repo: https://github.com/PyCQA/autoflake
     rev: v2.3.1
     hooks:

@@ -10,4 +10,5 @@ class Config(ConfigBase):
         default=100,
         description="Upper limit of function length. Beyond certain value LLM response becomes unstable.",
     )
+    user_overt_creator: bool = True
     model_name: str = "claude-3-7-sonnet-latest"

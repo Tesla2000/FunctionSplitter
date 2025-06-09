@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from itertools import islice
 from pathlib import Path
 
 import libcst
@@ -17,7 +18,7 @@ def modify_file(filepath: Path, config: Config) -> int:
     long_functions = get_long_functions(module, config)
     replacements: dict["FunctionDef", "ClassDef"] = {
         function: split_long_function(function, module, config)
-        for function in long_functions
+        for function in islice(long_functions, 1)
     }
     updated_module = function2template_method(replacements, module)
     new_code = updated_module.code

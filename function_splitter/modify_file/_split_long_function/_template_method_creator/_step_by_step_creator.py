@@ -1,69 +1,25 @@
 from __future__ import annotations
 
-import json
-from abc import ABC
-from abc import abstractmethod
-from typing import TypeVar
+from _split_long_function._template_method import TemplateMethod
+from _split_long_function._template_method import TemplateMethodConstructor
+from _split_long_function._template_method import TemplateMethodMainMethod
+from _split_long_function._template_method import TemplateMethodNameAndFields
+from _split_long_function._template_method import TemplateMethodSubmethods
 
-from _example import EXAMPLE
-from _template_method import TemplateMethod
-from _template_method import TemplateMethodConstructor
-from _template_method import TemplateMethodMainMethod
-from _template_method import TemplateMethodNameAndFields
-from _template_method import TemplateMethodSubmethods
-from litellm import completion
-from pydantic import BaseModel
-
-TemplateMethodComponent = TypeVar("TemplateMethodComponent", bound=BaseModel)
+from ._example import EXAMPLE
+from ._template_method_creator import TemplateMethodCreator
 
 
-class _TemplateMethodCreator(ABC):
-    def __init__(self, model_name: str):
-        self.model_name = model_name
-
-    @abstractmethod
-    def create(self, function_code: str) -> TemplateMethod:
-        pass
-
-    def _create_component(
-        self, prompt: str, component_class: type[TemplateMethodComponent]
-    ) -> TemplateMethodComponent:
-        model_response = completion(
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt,
-                }
-            ],
-            model=self.model_name,
-            response_format=component_class,
-        )
-        return component_class(
-            **json.loads(model_response.choices[0]["message"].content)
-        )
-
-
-class _OneShotCreator(_TemplateMethodCreator):
-    def create(self, function_code: str) -> TemplateMethod:
-        return self._create_component(
-            (
-                "Your tasks is split a long function by converting it to template method. "
-                "\nAssume that all the variables are defined and no import is needed "
-                "unless explicit import is provided on the function level. "
-                "\nWhen creating calls take into account if functions are asynchronous add await or async for if needed. "
-                "\nFUNCTION:"
-                f"\n{function_code}"
-            ),
-            TemplateMethod,
-        )
-
-
-class _StepByStepCreator(_TemplateMethodCreator):
-    def __init__(self, model_name: str, example: str = EXAMPLE):
+class StepByStepCreator(TemplateMethodCreator):
+    def __init__(
+        self, model_name: str, function_code: str, example: str = EXAMPLE
+    ):
         super().__init__(model_name)
+        self.function_code = function_code
         self.example = example
 
-    def create(self, function_code: str) -> TemplateMethod:
+    def create(self) -> TemplateMethod:
+        function_code = self.function_code
         name_and_fields = self._create_name_and_fields(function_code)
         constructor = self._create_constructor(function_code, name_and_fields)
         submethods = self._create_submethods(
