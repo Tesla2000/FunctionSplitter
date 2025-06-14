@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from config_parser import ConfigBase
 from pydantic import Field
 
@@ -15,3 +17,7 @@ class Config(ConfigBase):
     )
     submethod_creation_step: int = 3
     model_name: str = "claude-3-7-sonnet-latest"
+    env_path: Path = Field(
+        description="Path to env path",
+        default_factory=lambda: Path().joinpath(".env"),
+    )
