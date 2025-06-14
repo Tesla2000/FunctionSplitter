@@ -3,8 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 
 import libcst
-from _config import Config
-from exceptions import NotAble2SplitException
+from function_splitter._config import Config
+from function_splitter.exceptions import NotAble2SplitException
 from libcst import ClassDef
 from libcst import FunctionDef
 from more_itertools.more import map_except

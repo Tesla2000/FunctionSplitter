@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import NamedTuple
 
-from libcst import FunctionDef
-from libcst import Module
-from modify_file.split_long_function.template_method_components import (
+from function_splitter.modify_file.split_long_function.template_method_components import (
     Constructor,
 )
+from libcst import FunctionDef
+from libcst import Module
 
 from ._constructor_fields_extractor import constructor_fields_extractor
 from ._variable_name_replacer import VariableNameReplacer

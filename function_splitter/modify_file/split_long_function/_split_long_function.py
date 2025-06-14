@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import libcst
-from _config import Config
+from function_splitter._config import Config
 from libcst import ClassDef
 from libcst import FunctionDef
 from libcst import Module

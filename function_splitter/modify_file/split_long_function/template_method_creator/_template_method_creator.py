@@ -5,7 +5,7 @@ from abc import ABC
 from abc import abstractmethod
 from typing import TypeVar
 
-from modify_file.split_long_function.template_method_components import (
+from function_splitter.modify_file.split_long_function.template_method_components import (
     TemplateMethod,
 )
 from pydantic import BaseModel

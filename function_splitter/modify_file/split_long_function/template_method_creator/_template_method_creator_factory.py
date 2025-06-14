@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from _config import Config
-from exceptions import NotAble2SplitException
-from libcst import FunctionDef
-from libcst import Module
-from modify_file.split_long_function.template_method_creator._one_shot_creator._one_shot_creator import (
+from function_splitter._config import Config
+from function_splitter.exceptions import NotAble2SplitException
+from function_splitter.modify_file.split_long_function.template_method_creator._one_shot_creator._one_shot_creator import (
     OneShotCreator,
 )
+from libcst import FunctionDef
+from libcst import Module
 
 from ._overt_creator import OvertCreator
 from ._template_method_creator import TemplateMethodCreator

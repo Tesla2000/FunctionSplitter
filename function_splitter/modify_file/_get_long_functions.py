@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 import libcst
-from _config import Config
+from function_splitter._config import Config
 from libcst import FunctionDef
 from libcst import Module
 

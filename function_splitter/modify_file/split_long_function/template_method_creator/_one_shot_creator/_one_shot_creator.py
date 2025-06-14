@@ -1,15 +1,15 @@
 from __future__ import annotations
 
-from libcst import FunctionDef
-from modify_file.split_long_function.template_method_components import (
+from function_splitter.modify_file.split_long_function.template_method_components import (
     TemplateMethod,
 )
-from modify_file.split_long_function.template_method_creator._get_constructor_and_fields import (
+from function_splitter.modify_file.split_long_function.template_method_creator._get_constructor_and_fields import (
     get_constructor_and_fields,
 )
-from modify_file.split_long_function.template_method_creator._template_method_creator import (
+from function_splitter.modify_file.split_long_function.template_method_creator._template_method_creator import (
     TemplateMethodCreator,
 )
+from libcst import FunctionDef
 
 from ._missing_elements import _MissingElements
 

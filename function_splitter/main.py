@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from _config import Config
-from _transaction import transaction
 from config_parser import ConfigCreator
-from modify_file import modify_file
+
+from ._config import Config
+from ._transaction import transaction
+from .modify_file import modify_file
 
 
 def main() -> int:

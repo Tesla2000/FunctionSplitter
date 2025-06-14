@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from modify_file.split_long_function.template_method_components import Field
-from modify_file.split_long_function.template_method_components import (
+from function_splitter.modify_file.split_long_function.template_method_components import (
+    Field,
+)
+from function_splitter.modify_file.split_long_function.template_method_components import (
     MainMethod,
 )
-from modify_file.split_long_function.template_method_components import Method
+from function_splitter.modify_file.split_long_function.template_method_components import (
+    Method,
+)
 from pydantic import BaseModel
 from pydantic import Field as PydanticField
 
