@@ -7,7 +7,7 @@ from libcst import FunctionDef
 from libcst import Module
 
 from ._convert_self2name import convert_self2name
-from ._template_method_creator import template_method_creator_factory
+from .template_method_creator import template_method_creator_factory
 
 
 def split_long_function(

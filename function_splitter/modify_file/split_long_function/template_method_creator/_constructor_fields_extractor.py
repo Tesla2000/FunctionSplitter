@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from _split_long_function._template_method import Field
 from libcst import Annotation
 from libcst import FunctionDef
 from libcst import Module
+from modify_file.split_long_function.template_method_components import Field
 
 
 def constructor_fields_extractor(

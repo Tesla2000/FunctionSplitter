@@ -1,10 +1,20 @@
 from __future__ import annotations
 
-from _split_long_function._template_method import TemplateMethod
-from _split_long_function._template_method import TemplateMethodConstructor
-from _split_long_function._template_method import TemplateMethodMainMethod
-from _split_long_function._template_method import TemplateMethodNameAndFields
-from _split_long_function._template_method import TemplateMethodSubmethods
+from modify_file.split_long_function.template_method_components import (
+    TemplateMethod,
+)
+from modify_file.split_long_function.template_method_components import (
+    TemplateMethodConstructor,
+)
+from modify_file.split_long_function.template_method_components import (
+    TemplateMethodMainMethod,
+)
+from modify_file.split_long_function.template_method_components import (
+    TemplateMethodNameAndFields,
+)
+from modify_file.split_long_function.template_method_components import (
+    TemplateMethodSubmethods,
+)
 
 from ._example import EXAMPLE
 from ._template_method_creator import TemplateMethodCreator
