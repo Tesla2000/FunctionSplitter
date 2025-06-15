@@ -7,7 +7,7 @@ from pydantic import Field
 
 
 class Config(ConfigBase):
-    function_length_limit: int = 40
+    function_length_limit: int = 50
     oneshot_length_limit: int = Field(
         default=100,
         description="Upper limit of function length. Beyond certain value LLM response becomes unstable.",
