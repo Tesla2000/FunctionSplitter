@@ -16,10 +16,11 @@ class Config(ConfigBase):
         default=100,
         description="Upper limit of function length. Beyond certain value LLM response becomes unstable.",
     )
-    user_overt_creator: bool = Field(
+    use_overt_creator: bool = Field(
         default=False, description="Experimental and unstable method"
     )
     submethod_creation_step: int = 3
+    max_iterations: int = 10
     model_name: str = "claude-3-7-sonnet-latest"
     env_path: str = Field(
         description="Path to env path",

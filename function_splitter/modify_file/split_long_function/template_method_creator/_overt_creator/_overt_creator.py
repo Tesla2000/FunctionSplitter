@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+from collections import ChainMap
 from itertools import filterfalse
 from typing import Optional
 
@@ -70,18 +71,29 @@ class OvertCreator(TemplateMethodCreator):
             n_missing_submethods = len(missing_submethod_names)
             submethods_class = create_model(
                 "Submethods",
-                **{
-                    submethod_name: (
-                        Optional[str],
-                        Field(
-                            default=None,
-                            description="Function including definition def foo(self)",
-                        ),
+                **ChainMap(
+                    *tuple(
+                        {
+                            submethod_name: (
+                                Optional[str],
+                                Field(
+                                    default=None,
+                                    description="Function including definition def foo(self)",
+                                ),
+                            ),
+                            f"{submethod_name}_replacement": (
+                                Optional[str],
+                                Field(
+                                    default=None,
+                                    description="Part of code in the original function that is to be replaced",
+                                ),
+                            ),
+                        }
+                        for submethod_name in missing_submethod_names[
+                            : self.submethod_creation_step
+                        ]
                     )
-                    for submethod_name in missing_submethod_names[
-                        : self.submethod_creation_step
-                    ]
-                },
+                ),
             )
             submethods = self._create_component(
                 (

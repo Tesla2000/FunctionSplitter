@@ -349,7 +349,7 @@ toml = "^0.10.2"
 type = "git"
 url = "https://github.com/Tesla2000/ConfigParser"
 reference = "HEAD"
-resolved_reference = "13b505d59b762351b0856c9dd5dc900384c30540"
+resolved_reference = "e3008454a2461a73b727931d169fcf3c218f8272"
 
 [[package]]
 name = "distro"

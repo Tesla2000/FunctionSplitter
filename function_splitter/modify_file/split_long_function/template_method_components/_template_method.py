@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Any
 
 from pydantic import BaseModel
@@ -15,7 +16,7 @@ class TemplateMethodNameAndFields(BaseModel):
     name: str = PydanticField(
         description="Name of the template method that describes it's purpose"
     )
-    fields: list[Field] = PydanticField(
+    fields: Sequence[Field] = PydanticField(
         description="List of fields of the class that are used to pass data between methods. Should be private"
     )
 
@@ -33,7 +34,7 @@ class TemplateMethodConstructor(BaseModel):
 
 
 class TemplateMethodSubmethods(BaseModel):
-    submethods: list[Method] = PydanticField(
+    submethods: Sequence[Method] = PydanticField(
         description="Private methods of the class each responsible for a specific piece of code. A few logical lines tops. Modify self fields and likely don't return values"
     )
 

@@ -11,7 +11,7 @@ from ._method import Method
 
 
 class MainMethod(Method):
-    code: str = PydanticField(description=(BASE_METHOD_DESCRIPTIONS))
+    code: str = PydanticField(description=BASE_METHOD_DESCRIPTIONS)
 
     def __init__(self, /, **data: Any):
         super().__init__(**data)
