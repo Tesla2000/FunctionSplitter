@@ -14,7 +14,7 @@ from ._method import Method
 
 class TemplateMethodNameAndFields(BaseModel):
     name: str = PydanticField(
-        description="Name of the template method that describes it's purpose"
+        description="Name of the template method that describes it's purpose. Should be a class method so for example ResultGenerator instead of GenerateResult"
     )
     fields: Sequence[Field] = PydanticField(
         description="List of fields of the class that are used to pass data between methods. Should be private"

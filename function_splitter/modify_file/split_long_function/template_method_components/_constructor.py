@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 from pydantic import BaseModel
 from pydantic import Field as PydanticField
 
@@ -7,7 +9,7 @@ from ._field import Field
 
 
 class Constructor(BaseModel):
-    fields: list[Field] = PydanticField(
+    fields: Sequence[Field] = PydanticField(
         description=(
             "Fields user by constructor. each fields corresponds to constructor assignment."
             "\nExample:"
@@ -23,7 +25,7 @@ class Constructor(BaseModel):
         return (
             f"\tdef __init__(self, {', '.join(map(str, self.fields))}):"
             + "".join(
-                f"\n\t\tself._{field} = {field.field_name}"
+                f"\n\t\tself._{str(field).lstrip('_')} = {field.field_name}"
                 for field in self.fields
             )
         )
